@@ -1,7 +1,6 @@
 import 'dart:io';
 
 void main() {
-  // Player data
   String playerName = "Player One";
   int score = 0;
   int level = 1;
@@ -10,7 +9,6 @@ void main() {
   print("🎮 Welcome to the Dart Score Game!");
   print("--------------------------------");
 
-  // Main program loop
   while (isRunning) {
     print("\nMain Menu");
     print("1. Play Game");
@@ -23,14 +21,12 @@ void main() {
 
     switch (input) {
       case '1':
-        // Play game rounds
         playGameRounds(refScore: () => score, updateScore: (value) {
           score = value;
         });
         break;
 
       case '2':
-        // View player status
         String rank = getPlayerRank(score);
         print("\n📊 Player Status");
         print("Name : $playerName");
@@ -39,13 +35,11 @@ void main() {
         break;
 
       case '3':
-        // Reset score safely
         score = 0;
         print("\n🔄 Score has been reset.");
         break;
 
       case '4':
-        // Exit program
         print("\n Thanks for playing!");
         isRunning = false;
         break;
@@ -56,7 +50,6 @@ void main() {
   }
 }
 
-/// Handles multiple rounds of the game
 void playGameRounds({
   required int Function() refScore,
   required void Function(int) updateScore,
@@ -71,12 +64,11 @@ void playGameRounds({
 
     if (input == null || input.isEmpty) {
       print("⚠️ No input. Skipping round.");
-      continue; // skip invalid round
+      continue;
     }
 
     int points = int.tryParse(input) ?? -1;
 
-    // Validation using condition
     if (points < 0 || points > 20) {
       print("❌ Invalid points. Round skipped.");
       continue;
@@ -84,13 +76,11 @@ void playGameRounds({
 
     int newScore = refScore() + points;
 
-    // Internal rule protection
     assert(newScore >= 0, "Score can never be negative");
 
     updateScore(newScore);
     print("✅ Points added! Total score: ${refScore()}");
 
-    // Stop early if score is high
     if (refScore() >= 50) {
       print("🏆 You reached the maximum score!");
       break;
@@ -98,7 +88,6 @@ void playGameRounds({
   }
 }
 
-/// Determines player rank based on score
 String getPlayerRank(int score) {
   if (score < 20) {
     return "Beginner";
